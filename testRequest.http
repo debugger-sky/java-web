@@ -1,0 +1,11 @@
+POST http://localhost:8080
+Content-Type: application/json
+
+{
+  "test1": 1,
+  "test2": 2
+}
+
+###
+GET http://localhost:8080/test
+
