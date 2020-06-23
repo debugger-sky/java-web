@@ -11,6 +11,7 @@ public class SampleController {
         stringBuffer.append("Content-Type: text/html; charset=utf-8\n");
         stringBuffer.append("Content-Length: ").append(length).append("\n");
         stringBuffer.append("Access-Control-Allow-Origin: *").append("\n");
+        stringBuffer.append("Access-Control-Allow-Headers: *").append("\n");
         stringBuffer.append("\n"); // lastLine
         return stringBuffer.toString();
     }
