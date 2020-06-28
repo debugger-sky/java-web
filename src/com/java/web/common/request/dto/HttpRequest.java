@@ -1,6 +1,6 @@
-package com.java.web.common.dto;
+package com.java.web.common.request.dto;
 
-public class HttpRequest extends HttpRequestHeaderDto {
+public class HttpRequest extends HttpRequestHeader {
 
     String body;
 

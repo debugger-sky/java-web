@@ -1,8 +1,8 @@
-package com.java.web.common.dto;
+package com.java.web.common.request.dto;
 
 import com.java.web.common.route.HttpMethod;
 
-public class HttpRequestHeaderDto {
+public class HttpRequestHeader {
 
     HttpMethod httpMethod;
     String requestPath;
