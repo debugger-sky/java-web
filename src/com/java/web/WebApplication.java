@@ -10,7 +10,7 @@ import java.net.Socket;
 
 public class WebApplication {
 
-    public static void main(String[] args) throws NoSuchMethodException, ClassNotFoundException {
+    public static void main(String[] args) throws ClassNotFoundException {
 
         new Before();
 

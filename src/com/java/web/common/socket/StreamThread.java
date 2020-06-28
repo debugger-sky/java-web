@@ -2,6 +2,7 @@ package com.java.web.common.socket;
 
 import com.java.web.common.interceptor.Before;
 import com.java.web.common.request.dto.HttpRequest;
+import com.java.web.common.request.service.RequestService;
 
 import java.io.*;
 import java.net.Socket;
@@ -16,11 +17,11 @@ public class StreamThread implements Runnable {
     private BufferedInputStream bufferedInputStream;
     private InputStreamReader inputStreamReader;
     private OutputStream outputStream;
-    private final ServerService serverService;
+    private final RequestService requestService;
 
     public StreamThread(Socket clientSocket) {
         this.CLIENT_SOCKET = clientSocket;
-        serverService = new ServerService();
+        requestService = new RequestService();
     }
 
     @Override
@@ -41,8 +42,8 @@ public class StreamThread implements Runnable {
                 stringBuffer.append((char) i);
 
                 if (stringBuffer.toString().contains("\r\n\r\n") || stringBuffer.toString().contains("\n\n")) {
-                    Map<String, String> headerMap = serverService.getRequestHeaderMap(stringBuffer.toString());
-                    HttpRequest httpRequest = serverService.getRequestHeader(headerMap);
+                    Map<String, String> headerMap = requestService.getRequestHeaderMap(stringBuffer.toString());
+                    HttpRequest httpRequest = requestService.getRequestHeader(headerMap);
 
                     if(httpRequest.getContentLength() != null && Integer.parseInt(httpRequest.getContentLength()) > 0) {
                         byte[] body = new byte[Integer.parseInt(httpRequest.getContentLength())];

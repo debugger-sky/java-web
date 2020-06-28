@@ -7,8 +7,7 @@ import java.lang.annotation.*;
 @Inherited
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface GetMapping {
+public @interface DeleteMapping {
     String value() default "/";
-    HttpMethod method() default HttpMethod.GET;
-
+    HttpMethod method() default HttpMethod.DELETE;
 }

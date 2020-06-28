@@ -4,11 +4,9 @@ import com.java.web.common.route.HttpMethod;
 
 import java.lang.annotation.*;
 
-@Inherited
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface GetMapping {
+public @interface PatchMapping {
     String value() default "/";
-    HttpMethod method() default HttpMethod.GET;
-
+    HttpMethod method() default HttpMethod.PATCH;
 }
