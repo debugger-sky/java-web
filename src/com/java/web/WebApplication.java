@@ -1,86 +1,40 @@
 package com.java.web;
 
+import com.java.web.common.interceptor.Before;
+import com.java.web.common.socket.StreamThread;
 import com.java.web.common.socket.Server;
-import com.java.web.sample.controller.SampleController;
+import com.java.web.common.socket.ServerService;
 
 import java.io.*;
 import java.net.Socket;
 
 public class WebApplication {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException {
 
-        Server server = new Server();
-        SampleController sampleController = new SampleController();
+        new Before();
+
+        Server serverSocket = new Server();
+        ServerService serverService = new ServerService();
 
         while(true) {
-            Socket client = server.accept();
+            Socket client = serverSocket.accept();
+            Runnable inputStreamRunnable = new StreamThread(client);
 
-            System.out.println("socket accepted!!! " + "client port="+client.getPort() + " client ip="+client.getInetAddress() +"\n");
-            if(!"/0:0:0:0:0:0:0:1".equals(client.getInetAddress().toString())) {
-                System.out.println("other socket closed\n\n");
-                try {
-                    client.close();
-                    continue;
-                } catch (IOException e) {
-                    e.printStackTrace();
+            // 로컬 테스트만 가능하도록 IP제한
+            String[] strings = new String[]{"/0:0:0:0:0:0:0:1", "/127.0.0.1"};
+            if(!serverService.allowIp(client, strings)) {
+                try { client.close(); } catch (IOException e) {
+                    System.out.println("not allowed");
                 }
+                continue;
             }
 
-
-            InputStream inputStream = null;
-            InputStreamReader inputStreamReader = null;
-            BufferedReader bufferedReader = null;
-            OutputStream outputStream = null;
-
-            try {
-                inputStream = client.getInputStream();
-                inputStreamReader = new InputStreamReader(inputStream);
-                bufferedReader = new BufferedReader(inputStreamReader);
-                StringBuilder sb = new StringBuilder();
-
-                // header
-                String readLine;
-                while((readLine = bufferedReader.readLine()) != null) {
-                    if("".equals(readLine)) {
-                        sb.append("\n");
-                        break;
-                    }
-                    sb.append(readLine).append("\n");
-                }
-                System.out.println(sb.toString());
-                sb.delete(0, sb.length());
-
-                // body
-//                sb = new StringBuilder();
-//                while((readLine = bufferedReader.readLine()) != null && !"".equals(readLine)) {
-//                    sb.append(readLine).append("\n");
-//                }
-//                System.out.println(sb.toString());
-//                sb.delete(0, sb.length());
+            Thread inputStreamThread = new Thread(inputStreamRunnable);
+            inputStreamThread.start();
 
 
-                outputStream = client.getOutputStream();
 
-                byte[] outputBytes = sampleController.sampleData().getBytes();
-                outputStream.write(outputBytes);
-                outputStream.flush();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                try { if(outputStream!=null) outputStream.close(); } catch (IOException e) { }
-                try { if(inputStreamReader!=null) inputStreamReader.close(); } catch (IOException e) { }
-                try { if(inputStream!=null) inputStream.close(); } catch (IOException e) { }
-            }
-
-            try {
-                if(client!=null) client.close();
-                System.out.println("client closed");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
-
     }
 }

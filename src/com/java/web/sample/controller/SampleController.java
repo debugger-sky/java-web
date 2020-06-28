@@ -1,8 +1,20 @@
 package com.java.web.sample.controller;
 
+import com.java.web.common.annotation.Controller;
+import com.java.web.common.annotation.GetMapping;
+import com.java.web.common.annotation.RequestMapping;
+
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
+@Controller
+@RequestMapping(value = "/sample")
 public class SampleController {
+
+    @GetMapping
+    public String get(String requestBody) {
+        return sampleData();
+    }
 
     private String header(String length) {
         StringBuffer stringBuffer = new StringBuffer();
@@ -11,14 +23,31 @@ public class SampleController {
         stringBuffer.append("Content-Type: text/html; charset=utf-8\n");
         stringBuffer.append("Content-Length: ").append(length).append("\n");
         stringBuffer.append("Access-Control-Allow-Origin: *").append("\n");
+        stringBuffer.append("Access-Control-Allow-Headers: *").append("\n");
         stringBuffer.append("\n"); // lastLine
         return stringBuffer.toString();
     }
 
     public String sampleData() {
         String body = "Sample Test";
-        String sampleData = header(String.valueOf(body.length()));
-        sampleData += body;
+        String iframe = "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/POdypraDi6g\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>";
+        StringBuilder content = new StringBuilder();
+        content.append("<!DOCTYPE html>").append("\n")
+                .append("<html lang=\"ko\">").append("\n")
+                .append("<head>").append("\n")
+                .append("<meta charset=\"utf-8\">").append("\n")
+                .append("<title>TEST!!</title>").append("\n")
+                .append("<link rel=\"shortcut icon\" href=\"http://localhost:8888/favicon.ico\">").append("\n")
+                .append("<link rel=\"icon\" href=\"http://localhost:8888/favicon.ico\">").append("\n")
+                .append("</head>").append("\n")
+                .append("<body>").append("\n")
+                .append("<div style=\"color: blue\">졸리 너무 재밌어요!</div>").append("\n")
+                .append(iframe).append("\n")
+                .append("</body>").append("\n")
+                .append("</html>");
+
+        String sampleData = header(String.valueOf(content.toString().getBytes(StandardCharsets.UTF_8).length));
+        sampleData += content.toString();
         return sampleData;
     }
 }
