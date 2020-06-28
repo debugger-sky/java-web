@@ -1,5 +1,6 @@
 package com.java.web;
 
+import com.java.web.common.interceptor.Before;
 import com.java.web.common.socket.StreamThread;
 import com.java.web.common.socket.Server;
 import com.java.web.common.socket.ServerService;
@@ -9,7 +10,9 @@ import java.net.Socket;
 
 public class WebApplication {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NoSuchMethodException, ClassNotFoundException {
+
+        new Before();
 
         Server serverSocket = new Server();
         ServerService serverService = new ServerService();

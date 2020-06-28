@@ -1,6 +1,7 @@
 package com.java.web.sample.controller;
 
 import com.java.web.common.annotation.Controller;
+import com.java.web.common.annotation.GetMapping;
 import com.java.web.common.annotation.RequestMapping;
 
 import java.nio.charset.StandardCharsets;
@@ -10,6 +11,7 @@ import java.util.Date;
 @RequestMapping(value = "/sample")
 public class SampleController {
 
+    @GetMapping
     public String get(String requestBody) {
         return sampleData();
     }
@@ -35,6 +37,8 @@ public class SampleController {
                 .append("<head>").append("\n")
                 .append("<meta charset=\"utf-8\">").append("\n")
                 .append("<title>TEST!!</title>").append("\n")
+                .append("<link rel=\"shortcut icon\" href=\"http://localhost:8888/favicon.ico\">").append("\n")
+                .append("<link rel=\"icon\" href=\"http://localhost:8888/favicon.ico\">").append("\n")
                 .append("</head>").append("\n")
                 .append("<body>").append("\n")
                 .append("<div style=\"color: blue\">졸리 너무 재밌어요!</div>").append("\n")

@@ -33,6 +33,8 @@ public class OutputStreamThread implements Runnable {
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             try {
                 if(outputStream != null) outputStream.close();

@@ -57,13 +57,15 @@ public class StreamThread implements Runnable {
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             closeStream();
         }
 
     }
 
-    public void sendResponse(HttpRequest httpRequest) throws IOException, ClassNotFoundException {
+    public void sendResponse(HttpRequest httpRequest) throws Exception {
         outputStream = CLIENT_SOCKET.getOutputStream();
         byte[] response = Before.HTTP_ROUTE.getController(httpRequest).getBytes();
         outputStream.write(response);
